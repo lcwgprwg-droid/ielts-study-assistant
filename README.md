@@ -6,6 +6,14 @@
 
 `docs/` 是 GitHub Pages 静态版。学习记录保存在浏览器的 Local Storage，可通过设置页导出和导入 JSON。AI 请求经 Cloudflare Worker 转发，OpenAI API Key 只作为 Worker Secret 保存，不进入仓库或浏览器。
 
+首次启用在线 AI：
+
+```bash
+/bin/zsh scripts/configure-cloud-ai.sh
+```
+
+脚本会隐藏输入 `OPENAI_API_KEY` 和自定义的网页访问口令。随后在在线网页的“设置备份”中填写同一个访问口令；不要在那里填写 OpenAI API Key。
+
 ## 启动
 
 ```bash

@@ -1,0 +1,11 @@
+node_modules/
+.tools/
+.next/
+out/
+.env.local
+.dev.vars
+.wrangler/
+data/*.db
+data/*.db-*
+coverage/
+*.tsbuildinfo

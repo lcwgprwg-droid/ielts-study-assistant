@@ -1,0 +1,16 @@
+import Link from "next/link";
+import { ArrowRight, BookOpenCheck, PenLine, Target } from "lucide-react";
+import { Shell } from "@/components/shell";
+import { ActivityChart } from "@/components/activity-chart";
+import { dashboard } from "@/lib/study";
+
+export const dynamic = "force-dynamic";
+export default function Home() {
+  const data = dashboard(); const { metrics, summary } = data;
+  const metricItems = [["待复习", metrics.dueCards, "今日需要主动回忆"],["词组库", metrics.totalCards, "可持续积累的表达"],["复习正确率", `${metrics.reviewAccuracy}%`, "Good / Easy 占比"],["写作记录", metrics.writingCount, "已沉淀的表达样本"],["学习天数", metrics.streak, "最近有学习记录的天数"]];
+  return <Shell><header className="topline"><div><div className="eyebrow">Personal academic practice</div><h1>把每次修改，变成下一次的底气。</h1><p className="subtle">聚焦你的搭配、语法与表达习惯，而不是泛泛地“背更多单词”。</p></div><Link className="button gold" href="/review">开始今日复习</Link></header>
+  <section className="metrics">{metricItems.map(([label,value,note]) => <div className="metric" key={String(label)}><span>{label}</span><b>{value}</b><span>{note}</span></div>)}</section>
+  <section className="grid"><div className="stack"><article className="card summary"><div className="card-header"><div><div className="eyebrow">Learning reflection</div><h2>{summary?.headline ?? "还没有学习总结"}</h2></div><form action="/api/summaries" method="post"><Link href="/reports" className="button secondary">查看报告</Link></form></div><p className="subtle">{summary ? `已基于 ${summary.scope === "daily" ? "当天" : "最近一次"} 的真实学习数据生成，置信度：${summary.confidence}。` : "完成一次复习、写作或试题分析后，点击结束学习即可生成带证据的总结。"}</p><div className="summary-list"><div className="summary-item"><b>当前最值得关注</b><small>{summary?.currentIssues[0] ? `${summary.currentIssues[0].label} · ${summary.currentIssues[0].evidence}` : "先完成一个学习动作，系统会逐步建立个人问题画像。"}</small></div><div className="summary-item"><b>最近进步点</b><small>{summary?.improvements[0]?.evidence ?? "尚无足够数据，持续记录就能看见变化。"}</small></div></div></article>
+  <article className="card"><div className="card-header"><h2>七日学习轨迹</h2><span className="eyebrow">Evidence first</span></div>{data.weeklyActivity.length ? <ActivityChart data={data.weeklyActivity} /> : <p className="subtle">开始一次学习后，这里会显示你的连续投入。</p>}</article></div>
+  <div className="stack"><article className="card"><div className="card-header"><h2>当前问题</h2><Target size={19}/></div>{summary?.currentIssues.map((item) => <div className="issue" key={item.label}><div><b>{item.label}</b><small>{item.evidence}</small></div><span className="pill">{item.count || "待积累"}</span></div>) ?? <p className="subtle">暂无问题记录。</p>}</article><article className="card"><div className="card-header"><h2>下一步行动</h2><BookOpenCheck size={19}/></div>{(summary?.nextActions ?? [{title:"复习初始词组",description:"从 get / keep / lose touch 开始。",href:"/review"}]).map((item) => <div className="action" key={item.title}><div><b>{item.title}</b><p>{item.description}</p></div><Link href={item.href}><ArrowRight size={18}/></Link></div>)}</article><article className="card"><div className="card-header"><h2>快速开始</h2><PenLine size={19}/></div><p className="subtle">写一段你常用的英语表达，系统会保留原意并指出最影响自然度的问题。</p><Link href="/writing" className="button">进入写作修改</Link></article></div></section></Shell>;
+}

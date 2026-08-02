@@ -1,0 +1,4 @@
+interface:
+  display_name: "IELTS 学习助手"
+  short_description: "本地雅思词汇复习错题分析写作修改与每日进步追踪助手"
+  default_prompt: "Use $ielts-study-assistant to review my due IELTS phrases and identify my next practice."

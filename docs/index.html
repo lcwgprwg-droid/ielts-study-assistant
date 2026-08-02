@@ -3,65 +3,43 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="本地优先、证据驱动的 Academic IELTS 学习助手">
-  <title>IELTS Atelier · 雅思学习助手</title>
+  <meta name="description" content="与 ChatGPT 配合使用的持续雅思学习仪表盘">
+  <title>IELTS Atelier · 持续学习教练</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <button class="mobile-menu" id="menuButton" aria-label="打开导航">☰</button>
   <aside class="sidebar" id="sidebar">
-    <div class="brand"><span class="crest">IA</span><div>IELTS Atelier<small>Academic practice</small></div></div>
+    <div class="brand"><span class="crest">IA</span><div>IELTS Atelier<small>Continuous coaching</small></div></div>
     <nav>
       <button class="nav active" data-view="dashboard">⌂ 总览</button>
-      <button class="nav" data-view="vocab">Aa 词汇词组</button>
-      <button class="nav" data-view="review">◎ 今日复习</button>
-      <button class="nav" data-view="writing">✎ 写作修改</button>
-      <button class="nav" data-view="question">◇ 试题分析</button>
-      <button class="nav" data-view="reports">▥ 学习报告</button>
-      <button class="nav" data-view="settings">⚙ 设置备份</button>
+      <button class="nav" data-view="review">◎ 词汇复习</button>
+      <button class="nav" data-view="records">⇩ 导入学习记录</button>
+      <button class="nav" data-view="reports">▥ 日周月报告</button>
+      <button class="nav" data-view="portrait">◉ 学习者自画像</button>
+      <button class="nav" data-view="settings">⚙ 目标与备份</button>
     </nav>
-    <div class="privacy">学习记录只保存在当前浏览器。OpenAI 密钥保存在 Cloudflare，不进入网页或 GitHub。</div>
+    <div class="privacy">AI 对话在你的私有 ChatGPT 助手中完成。此网页不保存 API Key，只保存你主动导入的学习记录。</div>
   </aside>
   <main>
     <section class="view active" id="dashboard">
-      <header class="hero"><div><div class="eyebrow">Personal academic practice</div><h1>把每次修改，变成下一次的底气。</h1><p>聚焦固定搭配、拼写、冠词、单复数、中式表达与衔接。</p></div><button class="primary" data-go="review">开始今日复习</button></header>
+      <header class="hero"><div><div class="eyebrow">Long-term IELTS coaching</div><h1>让每一轮练习，都留下可验证的变化。</h1><p>固定使用同一条 ChatGPT 学习对话；结束时导入记录卡，让复习、趋势与自画像持续更新。</p></div><a class="primary assistant-link" href="https://chatgpt.com/" target="_blank" rel="noreferrer">进入 ChatGPT 助手</a></header>
       <div class="metrics" id="metrics"></div>
-      <div class="layout"><div class="stack"><article class="card accent"><div class="card-head"><h2>今日学习画像</h2><span class="tag gold">Evidence first</span></div><div id="dashboardSummary"></div></article><article class="card"><div class="card-head"><h2>七日学习轨迹</h2><span class="muted">活动次数</span></div><div class="chart" id="activityChart"></div></article></div><div class="stack"><article class="card"><h2>当前问题</h2><div id="topIssues"></div></article><article class="card"><h2>下一步行动</h2><div id="nextActions"></div></article></div></div>
+      <div class="layout"><div class="stack"><article class="card accent"><div class="card-head"><h2>最新学习总结</h2><span class="tag gold" id="latestScope">等待记录</span></div><div id="dashboardSummary"></div></article><article class="card"><div class="card-head"><h2>七日学习轨迹</h2><span class="muted">导入活动</span></div><div class="chart" id="activityChart"></div></article></div><div class="stack"><article class="card"><h2>当前问题</h2><div id="topIssues"></div></article><article class="card"><h2>下一步行动</h2><div id="nextActions"></div></article></div></div>
     </section>
 
-    <section class="view" id="vocab">
-      <header><div class="eyebrow">Vocabulary studio</div><h1>查清楚，再记牢。</h1><p>查询释义、搭配、易混表达和例句，一键加入复习库。</p></header>
-      <form class="card form" id="lookupForm"><label>单词或词组<input id="lookupInput" required placeholder="e.g. keep in touch with"></label><button class="primary">使用 AI 查询</button></form>
-      <div id="lookupResult"></div>
-      <article class="card"><div class="card-head"><h2>我的词组库</h2><span class="tag green" id="vocabCount"></span></div><div id="vocabList"></div></article>
+    <section class="view" id="review"><header><div class="eyebrow">Spaced repetition</div><h1>先回忆，再查看答案。</h1><p>导入 ChatGPT 记录卡中的高价值词组后，可在此处复习。</p></header><article class="card review" id="reviewCard"></article></section>
+
+    <section class="view" id="records">
+      <header><div class="eyebrow">ChatGPT learning record</div><h1>把对话成果，沉淀为长期证据。</h1><p>在私有 GPT 中说“结束本次学习”，复制它输出的 JSON 学习记录卡，再粘贴到这里。</p></header>
+      <div class="layout"><form class="card form" id="recordForm"><label>学习记录卡 JSON<textarea id="recordJson" required spellcheck="false" placeholder='粘贴 { "type": "ielts-study-record", ... }'></textarea></label><button class="primary">导入并更新报告</button><p class="muted" id="recordMessage"></p></form><article class="card"><h2>导入内容</h2><div class="import-guide"><p><b>会导入：</b>词组、复习结果、写作和错题指标、错误证据、日/周/月总结、自画像与下一步行动。</p><p><b>不会导入：</b>完整作文、题目原文、ChatGPT 对话、API Key 或访问口令。</p><a class="assistant-link button" href="https://chatgpt.com/" target="_blank" rel="noreferrer">打开 ChatGPT 助手</a></div></article></div>
     </section>
 
-    <section class="view" id="review">
-      <header><div class="eyebrow">Spaced repetition</div><h1>先回忆，再查看答案。</h1></header>
-      <article class="card review" id="reviewCard"></article>
-    </section>
+    <section class="view" id="reports"><header><div class="eyebrow">Evidence-based review</div><h1>日、周、月总结只说有证据的话。</h1><p>日总结在每日首次互动时补生成；周总结对比上周；月总结回顾能力趋势与目标距离。</p></header><div class="report-tabs" id="reportTabs"></div><div class="layout"><article class="card accent" id="reportSummary"></article><article class="card"><h2>错误趋势</h2><div id="errorBreakdown"></div><h2 class="minor-title">写作与复习证据</h2><div id="evidenceBreakdown"></div></article></div></section>
 
-    <section class="view" id="writing">
-      <header><div class="eyebrow">Writing studio</div><h1>让表达自然，但仍然是你的声音。</h1><p>默认保留原意；Task 1/2 估分均为非官方学习参考。</p></header>
-      <form class="card form" id="writingForm"><div class="two"><label>练习类型<select id="writingType"><option value="sentence">句子 / 自由表达</option><option value="task1">Academic Task 1</option><option value="task2">Academic Task 2</option></select></label><label>题目（可选）<input id="writingPrompt" placeholder="粘贴题目"></label></div><label>你的原文<textarea id="writingText" required placeholder="先写出来，AI 会逐处解释并保留你的原意。"></textarea></label><button class="primary">开始修改</button></form>
-      <div id="writingResult"></div>
-    </section>
+    <section class="view" id="portrait"><header><div class="eyebrow">Learner portrait</div><h1>你的学习方式，比一次分数更重要。</h1><p>每周与月度记录会更新优势、短板、触发场景、有效方法与当前风险。</p></header><div class="layout"><article class="card accent" id="portraitCard"></article><article class="card"><h2>阶段目标</h2><div id="goalProgress"></div><h2 class="minor-title">改进闭环</h2><div id="actionLoop"></div></article></div></section>
 
-    <section class="view" id="question">
-      <header><div class="eyebrow">Question lab</div><h1>把“做错了”拆成可修正的原因。</h1></header>
-      <form class="card form" id="questionForm"><div class="two"><label>题型<input id="questionType" value="阅读选择题"></label><label>你的答案 / 正确答案<div class="two"><input id="userAnswer" required placeholder="你的答案"><input id="correctAnswer" required placeholder="正确答案"></div></label></div><label>题干或原文<textarea id="questionStem" required></textarea></label><label>选项（可选）<textarea id="questionOptions" placeholder="A. ...&#10;B. ..."></textarea></label><button class="primary">分析这道题</button></form>
-      <div id="questionResult"></div>
-    </section>
-
-    <section class="view" id="reports">
-      <header class="hero"><div><div class="eyebrow">Learning reflection</div><h1>只展示有证据的进步。</h1></div><button class="primary" id="makeSummary">结束本次学习</button></header>
-      <div class="layout"><article class="card accent" id="reportSummary"></article><article class="card"><h2>错误趋势</h2><div id="errorBreakdown"></div></article></div>
-    </section>
-
-    <section class="view" id="settings">
-      <header><div class="eyebrow">Private connection</div><h1>模型自动调用，密钥不进网页。</h1></header>
-      <div class="layout"><form class="card form" id="settingsForm"><h2>AI 连接</h2><label>Cloudflare Worker 地址<input id="workerUrl" type="url" placeholder="https://ielts-atelier-ai.你的账号.workers.dev"></label><label>应用访问口令<input id="appToken" type="password" autocomplete="off" placeholder="不是 OpenAI API Key"></label><button class="primary">保存连接</button><p class="muted" id="settingsMessage"></p></form><article class="card"><h2>备份与迁移</h2><p>可把词卡、复习和报告迁移到另一台设备。备份不包含访问口令或 OpenAI Key。</p><div class="button-row"><button id="exportButton">下载 JSON 备份</button><label class="button">导入备份<input hidden id="importInput" type="file" accept="application/json"></label></div></article></div>
-    </section>
+    <section class="view" id="settings"><header><div class="eyebrow">Profile & backup</div><h1>先明确方向，再衡量进步。</h1></header><div class="layout"><form class="card form" id="profileForm"><h2>目标基线</h2><div class="two"><label>目标总分<input id="targetOverall" placeholder="例如 7.0"></label><label>考试日期（可选）<input id="examDate" type="date"></label></div><div class="two"><label>写作目标<input id="targetWriting" placeholder="例如 6.5"></label><label>每日时长（分钟）<input id="dailyMinutes" type="number" min="0" placeholder="例如 90"></label></div><label>私有 GPT 链接<input id="assistantUrl" type="url" placeholder="创建后粘贴 ChatGPT 助手链接"></label><button class="primary">保存目标</button><p class="muted" id="profileMessage"></p></form><article class="card"><h2>备份与迁移</h2><p>学习数据仅存当前浏览器。定期导出 JSON；在另一台设备导入即可继续查看趋势。</p><div class="button-row"><button id="exportButton">下载 JSON 备份</button><label class="button">导入完整备份<input hidden id="importInput" type="file" accept="application/json"></label></div><p class="muted">完整备份与 ChatGPT 学习记录卡是两种不同导入方式。</p></article></div></section>
   </main>
   <div class="toast" id="toast" role="status"></div>
   <script src="./app.js" defer></script>

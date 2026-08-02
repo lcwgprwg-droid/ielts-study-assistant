@@ -1,0 +1,54 @@
+{
+  "type": "ielts-study-record",
+  "scope": "weekly",
+  "periodKey": "2026-W31",
+  "recordedAt": "2026-08-02T12:00:00+08:00",
+  "vocabulary": [
+    {
+      "phrase": "keep in touch with",
+      "meaning": "与……保持联系",
+      "example": "I keep in touch with my former classmates through video calls."
+    }
+  ],
+  "reviews": [
+    { "phrase": "keep in touch with", "rating": "Good", "at": "2026-08-02T10:30:00+08:00" }
+  ],
+  "events": [
+    {
+      "kind": "writing",
+      "at": "2026-08-02T10:00:00+08:00",
+      "payload": { "wordCount": 268, "errors": ["article", "collocation"], "taskType": "task2" }
+    }
+  ],
+  "report": {
+    "headline": "本周已形成可追踪的写作与词组学习闭环。",
+    "summary": "新增 1 个词组并完成 1 次有效复习；写作中冠词和搭配仍需优先处理。",
+    "currentIssues": [
+      { "label": "冠词使用", "count": 2, "evidence": "两处可数单数名词前遗漏 a/an。" },
+      { "label": "固定搭配", "count": 1, "evidence": "将 keep touch 改为 keep in touch。" }
+    ],
+    "improvements": [
+      { "label": "词组回忆", "evidence": "keep in touch with 首次复习评分为 Good。" }
+    ],
+    "nextActions": [
+      "完成 8 题冠词微练习并解释每一题。",
+      "用 keep in touch with 写 3 个不同主题的句子。",
+      "下次 Task 2 写完后单独检查可数单数名词。"
+    ],
+    "actionLoop": [
+      { "method": "冠词微练习", "validation": "连续两次练习正确率至少 85%", "expectedResult": "减少可数单数名词前的冠词遗漏" }
+    ]
+  },
+  "portrait": {
+    "periodKey": "2026-W31",
+    "title": "样例学习者自画像",
+    "strengths": ["愿意复盘并能完成词组复习。"],
+    "weaknesses": ["冠词和固定搭配尚未稳定。"],
+    "triggers": ["写作速度加快时容易遗漏可数单数名词的限定词。"],
+    "effectiveMethods": ["短句改错后立即造句。"],
+    "risks": ["样本量不足，暂不能推断写作分数变化。"],
+    "actionLoop": [
+      { "method": "冠词检查清单", "validation": "连续三篇写作冠词错误下降", "expectedResult": "建立稳定的句末自检习惯" }
+    ]
+  }
+}

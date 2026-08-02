@@ -4,15 +4,9 @@
 
 ## 在线版
 
-`docs/` 是 GitHub Pages 静态版。学习记录保存在浏览器的 Local Storage，可通过设置页导出和导入 JSON。AI 请求经 Cloudflare Worker 转发，OpenAI API Key 只作为 Worker Secret 保存，不进入仓库或浏览器。
+`docs/` 是 GitHub Pages 静态仪表盘。AI 学习在私有 ChatGPT 助手中完成，直接使用 ChatGPT 订阅额度；网页只保存你主动导入的结构化学习记录，不调用 OpenAI API，也不要求 API Key。
 
-首次启用在线 AI：
-
-```bash
-/bin/zsh scripts/configure-cloud-ai.sh
-```
-
-脚本会隐藏输入 `OPENAI_API_KEY` 和自定义的网页访问口令。随后在在线网页的“设置备份”中填写同一个访问口令；不要在那里填写 OpenAI API Key。
+创建私有 GPT 时，请使用 [GPT 指令](chatgpt/IELTS_Atelier_GPT_Instructions.md) 和[创建步骤](chatgpt/SETUP.md)。每次在同一条 ChatGPT 学习对话中说“结束本次学习”后，复制其 JSON 学习记录卡并粘贴到网页的“导入学习记录”页面。日、周、月总结和学习者自画像会随导入记录更新。可用 [样例记录](chatgpt/sample-learning-record.json) 测试导入与图表。
 
 ## 启动
 
